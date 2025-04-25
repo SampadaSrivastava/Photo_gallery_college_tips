@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CollegeTips Photo Gallery</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --main-color: #ff6b6b;
+      --accent-color: #ffa502;
+      --bg: #fff9f2;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Fredoka', sans-serif;
+      background: var(--bg);
+      color: #333;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 2rem 0;
+      color: var(--main-color);
+    }
+
+    .filter-buttons {
+      margin: 1rem;
+    }
+
+    .filter-buttons button {
+      margin: 0.3rem;
+      padding: 0.6rem 1rem;
+      background: var(--main-color);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .filter-buttons button:hover {
+      background: var(--accent-color);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+
+    .photo-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .caption {
+      position: absolute;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      width: 100%;
+      padding: 0.5rem;
+      font-size: 1rem;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .photo-card:hover .caption {
+      opacity: 1;
+    }
+
+    /* Lightbox styles */
+    .lightbox {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .caption {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📸 CollegeTips Photo Gallery</h1>
+
+  <div class="filter-buttons">
+    <button onclick="filterGallery('all')">All</button>
+    <button onclick="filterGallery('team')">Team Vibes 🤝</button>
+    <button onclick="filterGallery('campaign')">Creative Campaigns 🎨</button>
+    <button onclick="filterGallery('fun')">Fun Moments 🥳</button>
+    <button onclick="filterGallery('bts')">Behind-The-Scenes 🎥</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <div class="photo-card team">
+      <img src="https://th.bing.com/th/id/OIP.ZMMGOBrJKuFcmjVNePgFGgAAAA?rs=1&pid=ImgDetMain" alt="Team Vibes">
+	  <img src="https://collegetips.in/images/header-image-1.jpg" alt="Team Vibes">
+      <div class="caption">Team Vibes 🤝</div>
+    </div>
+    <div class="photo-card team">
+      <img src="https://collegetips.in/images/workshop.jpg" alt="Team Workshop">
+	  <img src="https://www.collegetips.in/images/co555.jpg" alt="Team Workshop">
+      <div class="caption">Team Workshop 💼</div>
+    </div>
+    <div class="photo-card campaign">
+      <img src="https://www.collegetips.in/images/bs2424.jpeg" alt="Creative Campaign">
+	  <img src="https://th.bing.com/th/id/OIP.cTdqbxbLZ-IRr4_sD-484AHaHa?rs=1&pid=ImgDetMain" alt="Creative Campaign">
+	  
+      <div class="caption">Creative Campaigns 🎨</div>
+    </div>
+    <div class="photo-card campaign">
+      <img src="https://www.collegetips.in/images/mig14.jpg" alt="Campaign Art">
+	  <img src="https://collegetips.in/images/da4.jpeg" alt="Campaign Art">
+      <div class="caption">Campaign Art 🎭</div>
+    </div>
+    <div class="photo-card fun">
+      <img src="https://www.collegetips.in/images/co29.jpeg" alt="Fun Moment">
+	  <img src="https://www.collegetips.in/images/lf1.jpeg" alt="Fun Moment">
+      <div class="caption">Fun Moments 🥳</div>
+    </div>
+    <div class="photo-card bts">
+      <img src="https://www.collegetips.in/images/chooseus-image-3.jpg" alt="Behind the Scenes">
+	  <img src="https://www.collegetips.in/images/lf40.jpeg" alt="Behind the Scenes">
+      <div class="caption">Behind-The-Scenes 🎥</div>
+    </div>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Full View" />
+  </div>
+
+  <script>
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = lightbox.querySelector("img");
+
+    document.querySelectorAll(".photo-card img").forEach(img => {
+      img.addEventListener("click", () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add("active");
+      });
+    });
+
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("active");
+    });
+
+    function filterGallery(category) {
+      const cards = document.querySelectorAll('.photo-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.classList.contains(category)) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
+
